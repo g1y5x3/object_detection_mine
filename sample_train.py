@@ -1,9 +1,10 @@
 from ultralytics import YOLO
 
 # Load a model
-model = YOLO("yolov8x.yaml")  # build a new model from YAML
-model = YOLO("yolov8x.pt")  # load a pretrained model (recommended for training)
-model = YOLO("yolov8x.yaml").load("yolov8x.pt")  # build from YAML and transfer weights
+model = YOLO("yolov8x.yaml")
+model = YOLO("yolov8x.pt")
+model = YOLO("yolov8x.yaml").load("yolov8x.pt")
 
 # Train the model
-results = model.train(data="minedata.yaml", epochs=100, imgsz=640)
+results = model.train(data="minedata.yaml", epochs=100, imgsz=640, 
+                      project="mining_object_detection", name="experiement")
