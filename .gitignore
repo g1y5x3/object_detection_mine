@@ -1,2 +1,7 @@
 obj-detect_pod.yaml
+
 data
+runs
+wandb
+
+*.pt
