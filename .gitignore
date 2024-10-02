@@ -1,7 +1,8 @@
 obj-detect_pod.yaml
 
-data
+datasets
 runs
 wandb
+mining_object_detection
 
 *.pt
