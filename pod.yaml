@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: test-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: nvidia.com/gpu.product
+            operator: In
+            values:
+            # - NVIDIA-A100-SXM4-80GB
+            - NVIDIA-RTX-A6000
+  volumes:
+  - name: dshm
+    emptyDir:
+      medium: Memory
+  containers:
+  - name: gpu-container
+    image: ultralytics/ultralytics
+    command: ["/bin/sh", "-c"]
+    args:
+    - pip install gdown;
+      mkdir -p /datasets/minedata;
+      cd /datasets/minedata;
+      gdown https://drive.google.com/uc?id=1xOo8C3QgjOz9Hj6hBqHmnoiSRtwO-o4C;
+      gdown https://drive.google.com/uc?id=1pwjI64dLmCDtTW3QbKP4gt7yvlDWkuAG;
+      unzip images-20241002T033820Z-001.zip;
+      unzip labels-20241002T032645Z-001.zip;
+      cd /workspace;
+      git clone https://github.com/g1y5x3/object_detection_mine.git;
+      cd object_detection_mine;
+      WANDB_MODE=disabled python sample_train.py;
+      sleep infinity;
+    resources:
+      limits:
+        memory: "16G"
+        cpu: "8"
+        # nvidia.com/a100: "1"
+        nvidia.com/rtxa6000: "1"
+      requests:
+        memory: "16G"
+        cpu: "8"
+        # nvidia.com/a100: "1"
+        nvidia.com/rtxa6000: "1"
+    volumeMounts:
+    - name: dshm
+      mountPath: /dev/shm

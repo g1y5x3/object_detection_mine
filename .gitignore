@@ -6,3 +6,4 @@ wandb
 mining_object_detection
 
 *.pt
+*.zip
